@@ -569,7 +569,7 @@
     });
 
     // Paste the Google Apps Script web app URL here (ends in /exec). See README.md.
-    const SHEET_ENDPOINT = "";
+    const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbw0nqwl39GkE7uRbJCiOBsMn7GDYBm5LKd-p1NagMCdAp0xxdkHkkOYPLwefOqv1kwO/exec";
     const submitBtn = form.querySelector("[type=submit]");
 
     form.addEventListener("submit", async (event) => {
@@ -591,13 +591,9 @@
         if (params.has(key)) payload[key] = params.get(key);
       });
 
-      if (!SHEET_ENDPOINT) {
-        // Not connected yet: fall back to an email draft so no enquiry is lost
-        const body = Object.entries(payload).filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join("\n");
-        status.textContent = "Opening your email app. Press send there to submit your enquiry.";
-        location.href = `mailto:Ouncatalyst@gmail.com?subject=${encodeURIComponent("The Years Exchange registration enquiry")}&body=${encodeURIComponent(body)}`;
-        return;
-      }
+      const emailBody = Object.entries(payload).filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join("
+");
+      const emailLink = `mailto:Ouncatalyst@gmail.com?subject=${encodeURIComponent("The Years Exchange registration enquiry")}&body=${encodeURIComponent(emailBody)}`;
 
       submitBtn.disabled = true;
       submitBtn.textContent = "Sending…";
@@ -616,7 +612,11 @@
         form.reset();
       } catch (error) {
         status.classList.add("error");
-        status.textContent = "We couldn't confirm your enquiry was saved. Please try again, or call +91 86104 18890.";
+        status.textContent = "We couldn't confirm your enquiry was saved. Please try again, call +91 86104 18890, or ";
+        const link = document.createElement("a");
+        link.href = emailLink;
+        link.textContent = "email it to us";
+        status.append(link, ".");
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = "Send enquiry";
