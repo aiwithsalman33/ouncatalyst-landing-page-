@@ -591,8 +591,7 @@
         if (params.has(key)) payload[key] = params.get(key);
       });
 
-      const emailBody = Object.entries(payload).filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join("
-");
+      const emailBody = Object.entries(payload).filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join("\n");
       const emailLink = `mailto:Ouncatalyst@gmail.com?subject=${encodeURIComponent("The Years Exchange registration enquiry")}&body=${encodeURIComponent(emailBody)}`;
 
       submitBtn.disabled = true;
