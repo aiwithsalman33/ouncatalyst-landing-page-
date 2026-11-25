@@ -109,7 +109,7 @@
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     .full { grid-column: 1 / -1; }
     .field { min-width: 0; }
-    label, legend { font-size: .93rem; font-weight: 500; color: var(--navy); }
+    label { font-size: .93rem; font-weight: 500; color: var(--navy); }
     .opt { font-weight: 400; color: var(--muted); }
     .text { width: 100%; height: 52px; margin-top: 7px; padding: 0 16px; border: 1.5px solid var(--field); border-radius: 12px; background: #fff; color: var(--ink); font: inherit; }
     .text::placeholder { color: #6b7392; opacity: 1; }
@@ -117,15 +117,6 @@
     .text[aria-invalid=true] { border-color: var(--error); }
     .err { display: none; margin-top: 5px; color: var(--error); font-size: .86rem; }
     .err.on { display: block; }
-    fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
-    legend { padding: 0; margin-bottom: 9px; }
-    .pills { display: flex; flex-wrap: wrap; gap: 9px; }
-    .pills label { position: relative; cursor: pointer; }
-    .pills input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
-    .pills span { display: flex; align-items: center; min-height: 44px; padding: 6px 16px; border: 1.5px solid var(--field); border-radius: 12px; color: var(--ink); font-weight: 400; transition: background .15s; }
-    .pills label:hover span { background: var(--tint); }
-    .pills input:checked + span { background: var(--blue); border-color: var(--blue); color: #fff; }
-    .pills input:focus-visible + span { outline: 3px solid var(--blue); outline-offset: 2px; }
     .consent { display: flex; gap: 12px; align-items: flex-start; font-weight: 400; color: var(--muted); cursor: pointer; }
     .consent input { flex: none; width: 22px; height: 22px; margin: 0; accent-color: var(--blue); }
     form .button { width: 100%; }
@@ -213,8 +204,8 @@
     .price .ticks li { border-color: rgba(255,255,255,.16); }
     .amount { font-weight: 800; }
     .panel { border-radius: 18px; box-shadow: 0 0 0 1px var(--line), 0 24px 70px rgba(11,20,69,.12); }
-    .text, .pills span { border-radius: 10px; }
-    label, legend { font-weight: 600; }
+    .text { border-radius: 10px; }
+    label { font-weight: 600; }
     footer { padding: 72px 0 28px; background: var(--navy); color: #c9d3ff; }
     .foot { display: grid; grid-template-columns: 1.6fr 1fr 1.2fr .8fr; gap: 40px; align-items: start; }
     .foot-logo { display: inline-block; padding: 10px 16px; border-radius: 12px; background: #fff; }
@@ -312,6 +303,23 @@
       .panel form { padding: 22px 18px; }
     }
     @media (max-height: 560px) and (min-width: 621px) { .hero { min-height: 0; } }
+    /* Compact form */
+    .panel { max-width: 1040px; grid-template-columns: .62fr 1.38fr; }
+    .panel form { padding: 34px 38px; align-self: center; }
+    .grid { gap: 14px 18px; }
+    .text { height: 46px; margin-top: 5px; padding: 0 14px; font-size: 1rem; }
+    select.text { appearance: none; padding-right: 40px; text-overflow: ellipsis; cursor: pointer; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231746e0' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 13px center / 18px; }
+    select.text:has(option[value=""]:checked) { color: #6b7392; }
+    select.text option { color: var(--ink); }
+    .side > img { flex-basis: 180px; }
+    .side-body { padding: 26px 28px 30px; }
+    .contacts { margin-top: 16px; }
+    .contacts a, .contacts span { font-size: .95rem; }
+    @media (max-width: 960px) {
+      .panel { grid-template-columns: minmax(0, 1fr); }
+      .side > img { flex: none; height: 170px; }
+    }
+    @media (max-width: 620px) { .panel form { padding: 24px 20px; } .side > img { height: 150px; } }
   </style>
 </head>
 <body>
@@ -429,27 +437,10 @@
             <div class="field"><label for="email">Email</label><input class="text" id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required></div>
             <div class="field"><label for="degree">Degree / department</label><input class="text" id="degree" name="degree" placeholder="e.g. B.E. Mechanical" required></div>
             <div class="field"><label for="graduation-year">Graduation year</label><input class="text" id="graduation-year" name="graduationYear" type="number" min="1990" max="2100" inputmode="numeric" placeholder="e.g. 2026" required></div>
-            <div class="field full"><label for="college">College <span class="opt">(optional)</span></label><input class="text" id="college" name="college" autocomplete="organization" placeholder="College or institution"></div>
-            <fieldset class="field full" id="status-group"><legend>I am a</legend><div class="pills">
-              <label><input type="radio" name="status" value="Final-Year Student" required><span>Final-year student</span></label>
-              <label><input type="radio" name="status" value="Fresher"><span>Fresher</span></label>
-              <label><input type="radio" name="status" value="Job Seeker"><span>Job seeker</span></label>
-              <label><input type="radio" name="status" value="Working Professional"><span>Working professional</span></label>
-              <label><input type="radio" name="status" value="Other"><span>Other</span></label>
-            </div></fieldset>
-            <fieldset class="field full"><legend>I want help with <span class="opt">(optional)</span></legend><div class="pills">
-              <label><input type="checkbox" name="help" value="Job Search"><span>Job search</span></label>
-              <label><input type="checkbox" name="help" value="Resume Building"><span>Resume</span></label>
-              <label><input type="checkbox" name="help" value="LinkedIn Profile"><span>LinkedIn</span></label>
-              <label><input type="checkbox" name="help" value="Interview Preparation"><span>Interviews</span></label>
-              <label><input type="checkbox" name="help" value="Career Direction"><span>Career direction</span></label>
-              <label><input type="checkbox" name="help" value="All Modules"><span>All modules</span></label>
-            </div></fieldset>
-            <fieldset class="field full"><legend>Best day for me <span class="opt">(optional)</span></legend><div class="pills">
-              <label><input type="radio" name="availability" value="Saturday"><span>Saturday</span></label>
-              <label><input type="radio" name="availability" value="Sunday"><span>Sunday</span></label>
-              <label><input type="radio" name="availability" value="Either day"><span>Either day</span></label>
-            </div></fieldset>
+            <div class="field"><label for="college">College <span class="opt">(optional)</span></label><input class="text" id="college" name="college" autocomplete="organization" placeholder="College or institution"></div>
+            <div class="field"><label for="status">I am a</label><select class="text" id="status" name="status" required><option value="">Select</option><option value="Final-Year Student">Final-Year Student</option><option value="Fresher">Fresher</option><option value="Job Seeker">Job Seeker</option><option value="Working Professional">Working Professional</option><option value="Other">Other</option></select></div>
+            <div class="field"><label for="help">I want help with <span class="opt">(optional)</span></label><select class="text" id="help" name="help"><option value="">Select</option><option value="Job Search">Job search</option><option value="Resume Building">Resume</option><option value="LinkedIn Profile">LinkedIn</option><option value="Interview Preparation">Interviews</option><option value="Career Direction">Career direction</option><option value="All Modules">All modules</option></select></div>
+            <div class="field"><label for="availability">Best day for me <span class="opt">(optional)</span></label><select class="text" id="availability" name="availability"><option value="">Select</option><option value="Saturday">Saturday</option><option value="Sunday">Sunday</option><option value="Either day">Either day</option></select></div>
             <div class="field full"><label class="consent"><input type="checkbox" id="consent" name="contactConsent" value="Yes" required><span>OunCatalyst may contact me about this enquiry.</span></label></div>
             <div class="full">
               <button class="button" type="submit">Send enquiry</button>
@@ -543,11 +534,11 @@
       ["email", "Enter a valid email address."],
       ["degree", "Enter your degree or department."],
       ["graduation-year", "Enter a year between 1990 and 2100."],
-      ["status-group", "Choose the option that describes you."],
+      ["status", "Choose the option that describes you."],
       ["consent", "Tick this box so we can contact you."]
     ].map(([id, text]) => {
       const el = document.getElementById(id);
-      const inputs = el.matches("input") ? [el] : [...el.querySelectorAll("input")];
+      const inputs = [el];
       const control = inputs[0];
       const err = document.createElement("p");
       err.className = "err";
@@ -569,7 +560,7 @@
     });
 
     // Paste the Google Apps Script web app URL here (ends in /exec). See README.md.
-    const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbw0nqwl39GkE7uRbJCiOBsMn7GDYBm5LKd-p1NagMCdAp0xxdkHkkOYPLwefOqv1kwO/exec";
+    const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbwX8qL024esyGFaI0nD_Cxv7lla9VLLqh_wM6UMnnERDvxrVGhOUFYfgnMRb6y774v9/exec";
     const submitBtn = form.querySelector("[type=submit]");
 
     form.addEventListener("submit", async (event) => {
@@ -585,7 +576,6 @@
 
       const data = new FormData(form);
       const payload = Object.fromEntries(data);
-      payload.help = data.getAll("help").join(", ");
       const params = new URLSearchParams(location.search);
       ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach((key) => {
         if (params.has(key)) payload[key] = params.get(key);
